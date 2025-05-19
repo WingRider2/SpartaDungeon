@@ -17,7 +17,7 @@
     </li>
     <li><strong>컨트롤</strong>
       <ul>
-        <li>이동: WASD</li>
+        <li>이동: WASD-</li>
         <li>점프: Spacebar</li>
         <li>대쉬: Left Shift</li>
         <li>시점 전환(Toggle): T</li>
