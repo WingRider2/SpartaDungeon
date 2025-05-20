@@ -24,7 +24,13 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void OnJump(InputAction.CallbackContext context)
     {
+        
+        if (context.phase == InputActionPhase.Started)
+        {
+            Debug.Log("점프 눌림");
 
+            controller.SetJumpInput();
+        }
     }
     public void OnLook(InputAction.CallbackContext context)
     {
