@@ -26,9 +26,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
         
         if (context.phase == InputActionPhase.Started)
-        {
-            Debug.Log("점프 눌림");
-
+        {            
             controller.SetJumpInput();
         }
     }

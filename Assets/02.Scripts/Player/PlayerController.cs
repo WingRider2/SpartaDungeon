@@ -4,7 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerInputHandler))]
-public class PlayerController : Singleton<PlayerController>
+public class PlayerController : MonoBehaviour
 {
     private CharacterController characterController;
     private PlayerInputHandler playerInputHandler;
@@ -62,8 +62,8 @@ public class PlayerController : Singleton<PlayerController>
         Vector3 worldMove = transform.TransformDirection(input) * walkSpeed;
 
         // 중력 적용
-        if(verticalVelocity < 0f) verticalVelocity += Physics.gravity.y * Time.deltaTime * gravityScale;
-        else verticalVelocity += Physics.gravity.y * Time.deltaTime;
+        float g = Physics.gravity.y * (verticalVelocity < 0 ? gravityScale : 1f );
+        verticalVelocity += g * Time.deltaTime;
 
         worldMove.y = verticalVelocity;
         
