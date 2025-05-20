@@ -41,6 +41,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         HandleMoveAndJump();
+        CameraLook();
     }
     public void SetMoveInput(Vector2 input)
     {
@@ -49,6 +50,10 @@ public class PlayerController : MonoBehaviour
     public void SetJumpInput()
     {
         if (characterController.isGrounded) verticalVelocity = Mathf.Sqrt(jumpPower * -2f * Physics.gravity.y);
+    }
+    public void SetMouseDelta(Vector2 mouseDelta)
+    {
+        this.mouseDelta = mouseDelta;
     }
     void HandleMoveAndJump()
     {
@@ -71,6 +76,15 @@ public class PlayerController : MonoBehaviour
         // 실제 이동
         characterController.Move((worldMove + velocity) * Time.deltaTime);
 
+    }
+
+    public void CameraLook()
+    {
+        camCurXRot += mouseDelta.y * lookSensitivity;
+        camCurXRot = Mathf.Clamp(camCurXRot, minXLook, maxXLook);
+
+        cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0);
+        transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0);
     }
 
 }

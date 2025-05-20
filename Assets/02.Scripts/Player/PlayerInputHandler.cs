@@ -23,8 +23,7 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
     public void OnJump(InputAction.CallbackContext context)
-    {
-        
+    {        
         if (context.phase == InputActionPhase.Started)
         {            
             controller.SetJumpInput();
@@ -32,6 +31,7 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void OnLook(InputAction.CallbackContext context)
     {
+        controller.SetMouseDelta(context.ReadValue<Vector2>());
 
     }
     public void OnInventory(InputAction.CallbackContext context)
