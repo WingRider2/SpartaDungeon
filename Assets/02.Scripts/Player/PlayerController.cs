@@ -1,17 +1,17 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(PlayerInputHandler))]
 public class PlayerController : MonoBehaviour
 {
-    private CharacterController characterController;
-    private PlayerInputHandler playerInputHandler;
+    //private CharacterController characterController;
+    private PlayerInputHandler _playerInputHandler;
+    private Rigidbody _rigidbody;
 
     [Header("Movement")]
     Vector2 moveInput; // 이동입력
-    Vector3 velocity; //플레이어의 이동 정보
     float verticalVelocity = 0f;
     public float walkSpeed;
     public float jumpPower;
@@ -27,10 +27,12 @@ public class PlayerController : MonoBehaviour
 
     private Vector2 mouseDelta;
 
+    public Action inventory;
     private void Awake()
     {
-        characterController = GetComponent<CharacterController>();
-        playerInputHandler = GetComponent<PlayerInputHandler>();
+        
+        _playerInputHandler = GetComponent<PlayerInputHandler>();
+        _rigidbody = GetComponent<Rigidbody>();
     }
     void Start()
     {
@@ -40,42 +42,48 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        HandleMoveAndJump();
+        HandleMove();
         CameraLook();
     }
     public void SetMoveInput(Vector2 input)
     {
         moveInput = input;
     }
-    public void SetJumpInput()
-    {
-        if (characterController.isGrounded) verticalVelocity = Mathf.Sqrt(jumpPower * -2f * Physics.gravity.y);
+    public void SetJumpInput(float held)
+    {        
+        if(IsGrounded()) _rigidbody.AddForce(Vector2.up * jumpPower * held, ForceMode.Impulse);
     }
     public void SetMouseDelta(Vector2 mouseDelta)
     {
         this.mouseDelta = mouseDelta;
     }
-    void HandleMoveAndJump()
+    void HandleMove()
     {
-        if (characterController.isGrounded && verticalVelocity < 0)
+        Vector3 dir = transform.forward * moveInput.y + transform.right * moveInput.x;
+        dir *= walkSpeed;
+        dir.y = _rigidbody.velocity.y;
+
+        _rigidbody.velocity = dir;
+    }
+    bool IsGrounded()
+    {
+        Ray[] rays = new Ray[4]
         {
-            verticalVelocity = -2f; //음수를 넣어 착지 확인
+            new Ray(transform.position + (transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down*3.0f),
+            new Ray(transform.position + (-transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down*3.0f),
+            new Ray(transform.position + (transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down*3.0f),
+            new Ray(transform.position + (-transform.right * 0.2f) +(transform.up * 0.01f), Vector3.down*3.0f)
+        };
+
+        for (int i = 0; i < rays.Length; i++)
+        {
+            if (Physics.Raycast(rays[i],groundLayerMask))
+            {
+                return true;
+            }
         }
 
-        // 이동 입력
-        Vector3 input = new Vector3(moveInput.x, 0, moveInput.y);
-        Vector3 worldMove = transform.TransformDirection(input) * walkSpeed;
-
-        // 중력 적용
-        float g = Physics.gravity.y * (verticalVelocity < 0 ? gravityScale : 1f );
-        verticalVelocity += g * Time.deltaTime;
-
-        worldMove.y = verticalVelocity;
-        
-
-        // 실제 이동
-        characterController.Move((worldMove + velocity) * Time.deltaTime);
-
+        return false;
     }
 
     public void CameraLook()
