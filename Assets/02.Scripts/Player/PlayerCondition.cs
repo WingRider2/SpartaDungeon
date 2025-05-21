@@ -16,11 +16,14 @@ public class PlayerCondition : MonoBehaviour
 
     private void Update()
     {
-
         if (health.curValue <= 0f)
         {
             Die();
         }
+    }
+    public void hit(int amount)
+    {
+        health.Subtract();
     }
     public void Heal(int amount)
     {
@@ -37,12 +40,12 @@ public class PlayerCondition : MonoBehaviour
         {
             return false;
         }
-        stamina.Subtract(amount);
+        stamina.Subtract();
         return true;
     }
     public void TakePhysicalDamage(int damage)
     {
-        health.Subtract(damage);
+        health.Subtract();
         onTakeDamage?.Invoke();
     }
 }

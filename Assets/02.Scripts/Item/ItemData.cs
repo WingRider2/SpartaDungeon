@@ -8,7 +8,7 @@ using UnityEngine;
 public class ItemDataConsumable
 {
     public ConsumableType type;
-    public float value;
+    public int value;
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "NewItem")]

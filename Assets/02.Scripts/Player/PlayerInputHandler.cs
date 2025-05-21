@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
 {
@@ -39,9 +40,9 @@ public class PlayerInputHandler : MonoBehaviour
                 // 뗐을 때 총 누른 시간 계산
                 float held = (float)(context.time - _pressTime);
                 if (held >= 0.2f)
-                    controller.SetJumpInput(2.0f);
+                    controller.JumpInput(2.0f);
                 else 
-                    controller.SetJumpInput(1.0f);
+                    controller.JumpInput(1.0f);
                 break;
 
 
@@ -55,7 +56,11 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void OnInventory(InputAction.CallbackContext context)
     {
+        if (context.phase == InputActionPhase.Started)
+        {
+            controller.OpenInventory();
 
+        }
     }
     public void OnInteraction(InputAction.CallbackContext context)
     {

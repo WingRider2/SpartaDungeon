@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviour
     //private CharacterController characterController;
     private PlayerInputHandler _playerInputHandler;
     private Rigidbody _rigidbody;
+    private PlayerCondition _condition;
 
     [Header("Movement")]
     Vector2 moveInput; // 이동입력
@@ -25,14 +26,18 @@ public class PlayerController : MonoBehaviour
     private float camCurXRot;
     public float lookSensitivity;//회전 민감도
 
+
     private Vector2 mouseDelta;
 
+    [HideInInspector]
+    public bool canLook = true;
     public Action inventory;
     private void Awake()
     {
         
         _playerInputHandler = GetComponent<PlayerInputHandler>();
         _rigidbody = GetComponent<Rigidbody>();
+        _condition = GetComponent<PlayerCondition>();
     }
     void Start()
     {
@@ -49,13 +54,17 @@ public class PlayerController : MonoBehaviour
     {
         moveInput = input;
     }
-    public void SetJumpInput(float held)
+    public void JumpInput(float held)
     {        
         if(IsGrounded()) _rigidbody.AddForce(Vector2.up * jumpPower * held, ForceMode.Impulse);
     }
     public void SetMouseDelta(Vector2 mouseDelta)
     {
         this.mouseDelta = mouseDelta;
+    }
+    public void OpenInventory()
+    {
+        inventory?.Invoke();
     }
     void HandleMove()
     {
@@ -85,7 +94,11 @@ public class PlayerController : MonoBehaviour
 
         return false;
     }
-
+    void OnCollisionEnter(Collision collision) // 낙하 데미지
+    {
+        float impactSpeed = collision.relativeVelocity.magnitude;
+        if (impactSpeed > 10) _condition.hit((int)(impactSpeed/10));
+    }
     public void CameraLook()
     {
         camCurXRot += mouseDelta.y * lookSensitivity;
@@ -94,5 +107,10 @@ public class PlayerController : MonoBehaviour
         cameraContainer.localEulerAngles = new Vector3(-camCurXRot, 0, 0);
         transform.eulerAngles += new Vector3(0, mouseDelta.x * lookSensitivity, 0);
     }
-
+    void ToggleCursor()
+    {
+        bool toggle = Cursor.lockState == CursorLockMode.Locked;
+        Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        canLook = !toggle;
+    }
 }

@@ -8,34 +8,30 @@ public class Condition : MonoBehaviour
 {
     public int curValue;
     public int maxValue;
-    public GameObject HeartPrefab;
+    public GameObject Prefab;
 
-    private Image[] img;
+    public Image[] imgs;
     private int pivot = 0;
     private void Awake()
     {
         for (int i = 0; i < maxValue; i++)
         {
-            Instantiate(HeartPrefab, this.transform);
+            Instantiate(Prefab, this.transform);
         }
-        Image[] img = transform.GetComponentsInChildren<Image>();
-    }
-
-    private void Update()
-    {
+        imgs = transform.GetComponentsInChildren<Image>(includeInactive: false);
 
     }
 
     public void Add(int amount)
     {
         curValue = Math.Min(curValue + amount, maxValue);
-        img[curValue].color = Color.red;
+        imgs[curValue].color = Color.red;
     }
 
-    public void Subtract(int amount)
+    public void Subtract()
     {
-        curValue = Math.Max(curValue - amount, 0);
-        img[curValue].color = Color.black;
+        imgs[curValue].color = Color.black;
+        curValue--;
     }
 
 }

@@ -16,6 +16,7 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
                 {
                     setupInstance();
                 }
+                
                 DontDestroyOnLoad(instance.gameObject);
             }
             return instance;
@@ -33,7 +34,8 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
             instance = FindAnyObjectByType<T>() as T;
             DontDestroyOnLoad(gameObject);
         }
-        Destroy(gameObject);
+        else Destroy(gameObject);
+
     }
     static void setupInstance()
     {

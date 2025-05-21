@@ -16,8 +16,6 @@ public class UIInventory : MonoBehaviour
     private int selectedItemIndex;
     public TextMeshProUGUI selectedItemName;
     public TextMeshProUGUI selectedItemDescription;
-    public TextMeshProUGUI selectedItemStatName;
-    public TextMeshProUGUI selectedItemStatValue;
     public GameObject useButton;
     public GameObject equipButton;
     public GameObject unEquipButton;
@@ -57,8 +55,6 @@ public class UIInventory : MonoBehaviour
 
         selectedItemName.text = string.Empty;
         selectedItemDescription.text = string.Empty;
-        selectedItemStatName.text = string.Empty;
-        selectedItemStatValue.text = string.Empty;
 
         useButton.SetActive(false);
         equipButton.SetActive(false);
@@ -172,15 +168,6 @@ public class UIInventory : MonoBehaviour
         selectedItemName.text = selectedItem.item.displayName;
         selectedItemDescription.text = selectedItem.item.description;
 
-        selectedItemStatName.text = string.Empty;
-        selectedItemStatValue.text = string.Empty;
-
-        for (int i = 0; i < selectedItem.item.consumables.Length; i++)
-        {
-            selectedItemStatName.text += selectedItem.item.consumables[i].type.ToString() + "\n";
-            selectedItemStatValue.text += selectedItem.item.consumables[i].value.ToString() + "\n";
-        }
-
         useButton.SetActive(selectedItem.item.type == ItemType.Consumable);
         equipButton.SetActive(selectedItem.item.type == ItemType.Equipable && !slots[index].equipped);
         unEquipButton.SetActive(selectedItem.item.type == ItemType.Equipable && slots[index].equipped);
@@ -193,15 +180,18 @@ public class UIInventory : MonoBehaviour
         {
             for (int i = 0; i < selectedItem.item.consumables.Length; i++)
             {
-                /*
+
                 switch (selectedItem.item.consumables[i].type)
                 {
                     case ConsumableType.Health:
                         condition.Heal(selectedItem.item.consumables[i].value); break;
-                    case ConsumableType.Hunger:
-                        condition.Eat(selectedItem.item.consumables[i].value); break;
+                    case ConsumableType.Buff:
+                        //버프 적용
+                        break;
+                    default:
+                        break;
                 }
-                */
+
             }
             RemoveSelctedItem();
         }
