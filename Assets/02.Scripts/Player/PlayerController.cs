@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
+using static UnityEngine.UI.Image;
 
 [RequireComponent(typeof(PlayerInputHandler))]
 public class PlayerController : MonoBehaviour
@@ -13,11 +16,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     Vector2 moveInput; // 이동입력
-    float verticalVelocity = 0f;
     public float walkSpeed;
     public float jumpPower;
     public LayerMask groundLayerMask;
     public float gravityScale;
+    public float DashPower;
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -34,14 +37,14 @@ public class PlayerController : MonoBehaviour
     public Action inventory;
     private void Awake()
     {
-        
+
         _playerInputHandler = GetComponent<PlayerInputHandler>();
         _rigidbody = GetComponent<Rigidbody>();
         _condition = GetComponent<PlayerCondition>();
     }
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -52,11 +55,24 @@ public class PlayerController : MonoBehaviour
     }
     public void SetMoveInput(Vector2 input)
     {
+
         moveInput = input;
     }
     public void JumpInput(float held)
-    {        
-        if(IsGrounded()) _rigidbody.AddForce(Vector2.up * jumpPower * held, ForceMode.Impulse);
+    {
+        if (IsGrounded()) _rigidbody.AddForce(Vector2.up * jumpPower * held, ForceMode.Impulse);
+    }
+    public void Dash()
+    {
+        if (_rigidbody.velocity.magnitude < 1)
+        {
+            _rigidbody.AddForce(transform.forward.normalized * DashPower, ForceMode.Impulse);
+        }
+        else
+        {
+            _rigidbody.AddForce(new Vector3(_rigidbody.velocity.normalized.x, 0, _rigidbody.velocity.normalized.z) * DashPower, ForceMode.Impulse);
+        }
+
     }
     public void SetMouseDelta(Vector2 mouseDelta)
     {
@@ -78,15 +94,22 @@ public class PlayerController : MonoBehaviour
     {
         Ray[] rays = new Ray[4]
         {
-            new Ray(transform.position + (transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down*3.0f),
-            new Ray(transform.position + (-transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down*3.0f),
-            new Ray(transform.position + (transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down*3.0f),
-            new Ray(transform.position + (-transform.right * 0.2f) +(transform.up * 0.01f), Vector3.down*3.0f)
+            new Ray(transform.position + (transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down),
+            new Ray(transform.position + (-transform.forward * 0.2f) + (transform.up * 0.01f), Vector3.down),
+            new Ray(transform.position + (transform.right * 0.2f) + (transform.up * 0.01f), Vector3.down),
+            new Ray(transform.position + (-transform.right * 0.2f) +(transform.up * 0.01f), Vector3.down)
         };
+        /*
+        foreach (var ray in rays)
+        {
+            Debug.Log("야");
+            Debug.DrawRay(ray.origin, Vector3.down, Color.red , 1.0f , depthTest: false);
+        }
+        */
 
         for (int i = 0; i < rays.Length; i++)
         {
-            if (Physics.Raycast(rays[i],groundLayerMask))
+            if (Physics.Raycast(rays[i], 1.2f, groundLayerMask))
             {
                 return true;
             }
@@ -97,7 +120,7 @@ public class PlayerController : MonoBehaviour
     void OnCollisionEnter(Collision collision) // 낙하 데미지
     {
         float impactSpeed = collision.relativeVelocity.magnitude;
-        if (impactSpeed > 10) _condition.hit((int)(impactSpeed/10));
+        if (impactSpeed > 10) _condition.hit((int)(impactSpeed / 10));
     }
     public void CameraLook()
     {

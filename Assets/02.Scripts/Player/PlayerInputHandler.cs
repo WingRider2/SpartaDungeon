@@ -68,7 +68,11 @@ public class PlayerInputHandler : MonoBehaviour
     }
     public void OnDash(InputAction.CallbackContext context)
     {
+        if (context.phase == InputActionPhase.Started)
+        {
+            controller.Dash();
 
+        }
     }
     public void OnSwitchViewMode(InputAction.CallbackContext context)
     {

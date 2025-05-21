@@ -51,6 +51,15 @@ public class Interaction : MonoBehaviour
             }
         }
     }
+    public void OnPickUp(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started && curInteractable != null)
+        {
+            curInteractable.OnPick();
+
+        }
+    }
+
 
     private void SetPromptText()
     {

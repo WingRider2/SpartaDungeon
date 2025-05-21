@@ -30,6 +30,7 @@ public class Condition : MonoBehaviour
 
     public void Subtract()
     {
+        if (curValue < 0) return;
         imgs[curValue].color = Color.black;
         curValue--;
     }
