@@ -36,7 +36,20 @@ public class ItemObject : MonoBehaviour , IInteractable
 
         // 손 위치에 붙이기
         transform.SetParent(handHoldPoint);
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+    }
+
+    public void OnDrop()
+    {
+        isGrabbed = true;
+        // 물리 해제
+        if (TryGetComponent<Rigidbody>(out var rb))
+        {
+            rb.isKinematic = false;
+            rb.detectCollisions = true;
+        }
+        if (TryGetComponent<Collider>(out var col))
+            col.enabled = true;
+
+        transform.SetParent(null , worldPositionStays : true);
     }
 }

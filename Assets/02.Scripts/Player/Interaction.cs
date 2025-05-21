@@ -17,6 +17,8 @@ public class Interaction : MonoBehaviour
     public TextMeshProUGUI promptText;
     private Camera camera;
 
+    private bool isGrabbed;
+    public GameObject grabObject;
     void Start()
     {
         camera = Camera.main;
@@ -31,16 +33,16 @@ public class Interaction : MonoBehaviour
 
             Ray ray = camera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
             RaycastHit hit;
-            
+
             if (Physics.Raycast(ray, out hit, maxCheckDistance, layerMask))
-            {                
+            {
                 if (hit.collider.gameObject != curInteractGameObject)
                 {
 
                     curInteractGameObject = hit.collider.gameObject;
                     curInteractable = hit.collider.GetComponent<IInteractable>();
                     SetPromptText();
-                    
+
                 }
             }
             else
@@ -51,13 +53,36 @@ public class Interaction : MonoBehaviour
             }
         }
     }
+
+    public void tmep()
+    {
+        //물체의 화면상 크기
+        //내가 정면을 향해 ray를 날려서
+        //최대 ray는 정해져있고
+        //ray를통해 거리룰 구하고
+        //구한값을 통해 오브젝트 크기 조절을 한다.
+    }
     public void OnPickUp(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Started && curInteractable != null)
+      
+        if (context.phase == InputActionPhase.Started)
         {
-            curInteractable.OnPick();
+            if (grabObject != null && isGrabbed)
+            {
+                grabObject.GetComponent<IInteractable>().OnDrop();
+                grabObject = null;
+                isGrabbed = false;
+            }
+            else if(grabObject == null && !isGrabbed && curInteractable != null)
+            {
+                curInteractable.OnPick();
+                grabObject = curInteractGameObject;
+                isGrabbed = true;
+            }
+
 
         }
+
     }
 
 
