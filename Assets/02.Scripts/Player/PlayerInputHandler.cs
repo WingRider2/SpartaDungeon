@@ -39,7 +39,7 @@ public class PlayerInputHandler : MonoBehaviour
 
                 // 뗐을 때 총 누른 시간 계산
                 float held = (float)(context.time - _pressTime);
-                if (held >= 0.2f)
+                if (held >= 0.1f)
                     controller.JumpInput(2.0f);
                 else 
                     controller.JumpInput(1.0f);

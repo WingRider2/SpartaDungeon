@@ -1294,7 +1294,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 933764404}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1996952278}
+        m_TargetAssemblyTypeName: UIInventory, Assembly-CSharp
+        m_MethodName: OnEquipButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &933764404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2603,7 +2615,7 @@ MonoBehaviour:
   condition: {fileID: 0}
   equip: {fileID: 0}
   itemData: {fileID: 0}
-  dropPosition: {fileID: 0}
+  dropPosition: {fileID: 1095786211}
 --- !u!114 &1310030293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3519,7 +3531,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1681023381}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1996952278}
+        m_TargetAssemblyTypeName: UIInventory, Assembly-CSharp
+        m_MethodName: OnUseButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1681023381
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4129,7 +4153,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1932210645}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1996952278}
+        m_TargetAssemblyTypeName: UIInventory, Assembly-CSharp
+        m_MethodName: OnDropButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1932210645
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4250,7 +4286,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1958591291}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1996952278}
+        m_TargetAssemblyTypeName: UIInventory, Assembly-CSharp
+        m_MethodName: OnUnEquipButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1958591291
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4407,7 +4455,8 @@ MonoBehaviour:
   slots: []
   inventoryWindow: {fileID: 791001331}
   slotPanel: {fileID: 1361465686}
-  dropPosition: {fileID: 1310030286}
+  dropPosition: {fileID: 1095786211}
+  selectedItem: {fileID: 0}
   selectedItemName: {fileID: 10260686}
   selectedItemDescription: {fileID: 1033305003}
   useButton: {fileID: 1681023378}

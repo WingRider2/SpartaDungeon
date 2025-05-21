@@ -62,16 +62,15 @@ public class PlayerController : MonoBehaviour
     {
         if (IsGrounded()) _rigidbody.AddForce(Vector2.up * jumpPower * held, ForceMode.Impulse);
     }
-    public void Dash()
+    public void Dash()        
     {
-        if (_rigidbody.velocity.magnitude < 1)
-        {
-            _rigidbody.AddForce(transform.forward.normalized * DashPower, ForceMode.Impulse);
-        }
-        else
-        {
-            _rigidbody.AddForce(new Vector3(_rigidbody.velocity.normalized.x, 0, _rigidbody.velocity.normalized.z) * DashPower, ForceMode.Impulse);
-        }
+        Vector3 direction = (
+            (_rigidbody.velocity.magnitude < 1) 
+            ? transform.forward.normalized 
+            : new Vector3(_rigidbody.velocity.normalized.x, 0, _rigidbody.velocity.normalized.z));
+
+        _rigidbody.AddForce(direction * DashPower, ForceMode.Impulse);
+
 
     }
 

@@ -12,7 +12,7 @@ public class UIInventory : MonoBehaviour
     public Transform dropPosition;
 
     [Header("Selected Item")]
-    private ItemSlot selectedItem;
+    public ItemSlot selectedItem;
     private int selectedItemIndex;
     public TextMeshProUGUI selectedItemName;
     public TextMeshProUGUI selectedItemDescription;
@@ -153,6 +153,9 @@ public class UIInventory : MonoBehaviour
     // Player 스크립트 먼저 수정
     public void ThrowItem(ItemData data)
     {
+        if (data != null) Debug.Log("낫널이야");
+        else Debug.Log("널이야");
+
         Instantiate(data.dropPrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
     }
 
