@@ -19,6 +19,10 @@ public class Interaction : MonoBehaviour
 
     private bool isGrabbed;
     public GameObject grabObject;
+
+
+    float initialDistance;
+    float initialScale;
     void Start()
     {
         camera = Camera.main;
@@ -42,7 +46,6 @@ public class Interaction : MonoBehaviour
                     curInteractGameObject = hit.collider.gameObject;
                     curInteractable = hit.collider.GetComponent<IInteractable>();
                     SetPromptText();
-
                 }
             }
             else
@@ -52,20 +55,16 @@ public class Interaction : MonoBehaviour
                 promptText.gameObject.SetActive(false);
             }
         }
+        if (isGrabbed)
+        {
+            ObjSize();
+        }
     }
 
-    public void tmep()
-    {
-        //물체의 화면상 크기
-        //내가 정면을 향해 ray를 날려서
-        //최대 ray는 정해져있고
-        //ray를통해 거리룰 구하고
-        //구한값을 통해 오브젝트 크기 조절을 한다.
-    }
     public void OnPickUp(InputAction.CallbackContext context)
     {
-      
-        if (context.phase == InputActionPhase.Started)
+
+        if (context.phase == InputActionPhase.Performed)
         {
             if (grabObject != null && isGrabbed)
             {
@@ -73,14 +72,16 @@ public class Interaction : MonoBehaviour
                 grabObject = null;
                 isGrabbed = false;
             }
-            else if(grabObject == null && !isGrabbed && curInteractable != null)
+            else if (grabObject == null && !isGrabbed && curInteractable != null)
             {
                 curInteractable.OnPick();
                 grabObject = curInteractGameObject;
                 isGrabbed = true;
+
+                Vector3 camPos = camera.transform.position;
+                initialDistance = Vector3.Distance(grabObject.transform.position, camPos);
+                initialScale = grabObject.transform.localScale.x;
             }
-
-
         }
 
     }
@@ -102,4 +103,40 @@ public class Interaction : MonoBehaviour
             promptText.gameObject.SetActive(false);
         }
     }
+
+    public void ObjSize()
+    {
+
+        Ray ray = camera.ScreenPointToRay(
+            new Vector3(Screen.width / 2, Screen.height / 2)
+        );
+        RaycastHit hit;
+
+        int interactableLayer = LayerMask.NameToLayer("Interactable");
+        int playerLayer = LayerMask.NameToLayer("Player");
+        int mask = Physics.DefaultRaycastLayers
+                 & ~((1 << interactableLayer) | (1 << playerLayer));
+
+        Collider col = grabObject.GetComponent<Collider>();
+        float radius = col.bounds.extents.magnitude;
+
+        float backgroundDistance;
+        if (Physics.SphereCast(ray, radius, out hit, maxCheckDistance, mask))
+        {
+            backgroundDistance = hit.distance;
+        }
+        else backgroundDistance = maxCheckDistance;
+
+        //initialDistance = Mathf.Min(initialDistance , backgroundDistance);
+
+        float scaleFactor = backgroundDistance / initialDistance;
+
+
+        grabObject.transform.localScale = Vector3.one * (initialScale * scaleFactor);
+
+
+        Vector3 dir = (grabObject.transform.position - camera.transform.position).normalized;
+        grabObject.transform.position = camera.transform.position + dir * initialDistance;
+    }
+
 }

@@ -2734,12 +2734,12 @@ MonoBehaviour:
     dashPower: 0
   groundLayerMask:
     serializedVersion: 2
-    m_Bits: 439
-  gravityScale: 3
+    m_Bits: 1463
   cameraContainer: {fileID: 1299069092}
   minXLook: -80
   maxXLook: 80
   lookSensitivity: 0.05
+  isGripWall: 0
   canLook: 1
 --- !u!114 &1310030289
 MonoBehaviour:
@@ -2783,7 +2783,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   checkRate: 0.05
-  maxCheckDistance: 3
+  maxCheckDistance: 10
   layerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -5344,10 +5344,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8696668975722770363, guid: b3e2dd75b4365df469027a09cf831967, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: dba2d76ae3210274bba21c1c68ba0528, type: 2}
     - target: {fileID: 8818289297465341447, guid: b3e2dd75b4365df469027a09cf831967, type: 3}
       propertyPath: m_Name
       value: Ground

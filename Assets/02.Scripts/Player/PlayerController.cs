@@ -19,7 +19,6 @@ public class PlayerController : MonoBehaviour
     public PlayerMovementData playerMovementData;
     public PlayerMovementData MovementBuffDate;
     public LayerMask groundLayerMask;
-    public float gravityScale;
 
 
     [Header("Look")]
@@ -29,12 +28,13 @@ public class PlayerController : MonoBehaviour
     private float camCurXRot;
     public float lookSensitivity;//회전 민감도
 
-
     private Vector2 mouseDelta;
 
+    public bool isGripWall;
     [HideInInspector]
     public bool canLook = true;
     public Action inventory;
+
     private void Awake()
     {
 
@@ -42,11 +42,6 @@ public class PlayerController : MonoBehaviour
         _rigidbody = GetComponent<Rigidbody>();
         _condition = GetComponent<PlayerCondition>();
     }
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {        
@@ -58,7 +53,6 @@ public class PlayerController : MonoBehaviour
     }
     public void SetMoveInput(Vector2 input)
     {
-
         moveInput = input;
     }
     public void JumpInput(float held)
@@ -130,7 +124,16 @@ public class PlayerController : MonoBehaviour
     }
     void HandleMove()
     {
-        Vector3 dir = transform.forward * moveInput.y + transform.right * moveInput.x;
+        Vector3 dir = Vector3.forward;
+        if (isGripWall)
+        {
+            dir = new Vector3((transform.right * moveInput.x).x, (transform.forward * moveInput.y).y, 0);
+        }
+        else
+        {
+            dir = transform.forward * moveInput.y + transform.right * moveInput.x;
+        }
+            
         dir *= playerMovementData.walkSpeed + MovementBuffDate.walkSpeed;
         dir.y = _rigidbody.velocity.y;
 
@@ -167,6 +170,20 @@ public class PlayerController : MonoBehaviour
     {
         float impactSpeed = collision.relativeVelocity.magnitude;
         if (impactSpeed > 10) _condition.hit((int)(impactSpeed / 10));
+
+        if (collision.transform.CompareTag("GripWall"))
+        {
+            isGripWall = true;
+            transform.GetComponent<Rigidbody>().useGravity = !isGripWall; 
+        }
+    }
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.transform.CompareTag("GripWall"))
+        {
+            isGripWall = false;
+            transform.GetComponent<Rigidbody>().useGravity = !isGripWall;
+        }
     }
     public void CameraLook()
     {
