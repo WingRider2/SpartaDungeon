@@ -25,7 +25,7 @@ public class Condition : MonoBehaviour
     public void Add(int amount)
     {
         curValue = Math.Min(curValue + amount, maxValue);
-        imgs[curValue].color = Color.red;
+        imgs[curValue].color = Prefab.GetComponent<Image>().color;
     }
 
     public void Subtract()

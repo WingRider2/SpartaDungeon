@@ -27,4 +27,5 @@ public class PlayerMovementData
         yield return new WaitForSecondsRealtime(data.Duration);
         dashPower -= data.Velue;
     }
+
 }

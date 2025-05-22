@@ -153,9 +153,6 @@ public class UIInventory : MonoBehaviour
     // Player 스크립트 먼저 수정
     public void ThrowItem(ItemData data)
     {
-        if (data != null) Debug.Log("낫널이야");
-        else Debug.Log("널이야");
-
         Instantiate(data.dropPrefab, dropPosition.position, Quaternion.Euler(Vector3.one * Random.value * 360));
     }
 
@@ -189,8 +186,7 @@ public class UIInventory : MonoBehaviour
                     case ConsumableType.Health:
                         condition.Heal(selectedItem.item.consumables[i].value); break;
                     case ConsumableType.Buff:
-                        controller.UseBuff(selectedItem.item.buffData); break;
-                        //버프 적용
+                        controller.UseBuff(selectedItem.item.buffData); break;                        
                         break;
                     default:
                         break;

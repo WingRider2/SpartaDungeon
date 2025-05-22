@@ -20,7 +20,7 @@ public class PlayerController : MonoBehaviour
     public PlayerMovementData MovementBuffDate;
     public LayerMask groundLayerMask;
     public float gravityScale;
-    
+
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -49,9 +49,12 @@ public class PlayerController : MonoBehaviour
 
     // Update is called once per frame
     void Update()
+    {        
+        CameraLook();
+    }
+    void FixedUpdate()
     {
         HandleMove();
-        CameraLook();
     }
     public void SetMoveInput(Vector2 input)
     {
@@ -60,16 +63,22 @@ public class PlayerController : MonoBehaviour
     }
     public void JumpInput(float held)
     {
-        if (IsGrounded()) _rigidbody.AddForce(Vector2.up * (playerMovementData.jumpPower+ MovementBuffDate.jumpPower) * held, ForceMode.Impulse);
+        Debug.Log("점프");
+        if (IsGrounded()) _rigidbody.AddForce(Vector2.up * (playerMovementData.jumpPower + MovementBuffDate.jumpPower) * held, ForceMode.Impulse);
     }
-    public void Dash()        
+    public void Dash()
     {
-        Vector3 direction = (
-            (_rigidbody.velocity.magnitude < 1) 
-            ? transform.forward.normalized 
-            : new Vector3(_rigidbody.velocity.normalized.x, 0, _rigidbody.velocity.normalized.z));
+        if (_condition.UseStamina(1))
+        {
+            Vector3 direction = (
+                (_rigidbody.velocity.magnitude < 1)
+                ? transform.forward.normalized
+                : new Vector3(_rigidbody.velocity.normalized.x, 0, _rigidbody.velocity.normalized.z));
 
-        _rigidbody.AddForce(direction * (playerMovementData.dashPower + MovementBuffDate.dashPower), ForceMode.Impulse);
+            _rigidbody.AddForce(direction * (playerMovementData.dashPower + MovementBuffDate.dashPower), ForceMode.Impulse);
+
+        }
+
     }
     public void UseBuff(BuffData data)
     {

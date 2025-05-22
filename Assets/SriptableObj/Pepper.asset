@@ -25,5 +25,5 @@ MonoBehaviour:
   equipPrefab: {fileID: 0}
   buffData:
     type: 2
-    Duration: 5
-    Velue: 2
+    Duration: 10
+    Velue: 3

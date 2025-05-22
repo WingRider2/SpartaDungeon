@@ -14,8 +14,13 @@ public class PlayerCondition : MonoBehaviour
 
     public event Action onTakeDamage;
 
+    public void Start()
+    {
+        StartCoroutine(Recoverytamina());
+    }
     private void Update()
     {
+        
         if (health.curValue <= 0f)
         {
             Die();
@@ -42,6 +47,15 @@ public class PlayerCondition : MonoBehaviour
         }
         stamina.Subtract();
         return true;
+    }
+    public IEnumerator Recoverytamina()
+    {
+        while (true)
+        {
+            stamina.Add(1);
+            yield return new WaitForSeconds(2.0f);
+        }
+              
     }
     public void TakePhysicalDamage(int damage)
     {
