@@ -3,15 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>액션 플랫폼 게임 프로토타입 프로젝트 개요</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
-    h1, h2 { color: #333; }
-    ul { margin: 0; padding-left: 1.2em; }
-    li { margin-bottom: 0.5em; }
-    section { margin-bottom: 2em; }
-    .emoji { margin-right: 0.5em; }
-  </style>
 </head>
 <body>
   <h1>프로젝트 개요</h1>
