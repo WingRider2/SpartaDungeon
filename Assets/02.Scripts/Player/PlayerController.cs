@@ -16,11 +16,11 @@ public class PlayerController : MonoBehaviour
 
     [Header("Movement")]
     Vector2 moveInput; // 이동입력
-    public float walkSpeed;
-    public float jumpPower;
+    public PlayerMovementData playerMovementData;
+    public PlayerMovementData MovementBuffDate;
     public LayerMask groundLayerMask;
     public float gravityScale;
-    public float DashPower;
+    
 
     [Header("Look")]
     public Transform cameraContainer;
@@ -60,7 +60,7 @@ public class PlayerController : MonoBehaviour
     }
     public void JumpInput(float held)
     {
-        if (IsGrounded()) _rigidbody.AddForce(Vector2.up * jumpPower * held, ForceMode.Impulse);
+        if (IsGrounded()) _rigidbody.AddForce(Vector2.up * (playerMovementData.jumpPower+ MovementBuffDate.jumpPower) * held, ForceMode.Impulse);
     }
     public void Dash()        
     {
@@ -69,12 +69,48 @@ public class PlayerController : MonoBehaviour
             ? transform.forward.normalized 
             : new Vector3(_rigidbody.velocity.normalized.x, 0, _rigidbody.velocity.normalized.z));
 
-        _rigidbody.AddForce(direction * DashPower, ForceMode.Impulse);
-
+        _rigidbody.AddForce(direction * (playerMovementData.dashPower + MovementBuffDate.dashPower), ForceMode.Impulse);
+    }
+    public void UseBuff(BuffData data)
+    {
+        if (data.Duration < 0)
+        {
+            switch (data.type)
+            {
+                case BuffTupe.Speed:
+                    playerMovementData.walkSpeed += data.Velue;
+                    break;
+                case BuffTupe.JumpPower:
+                    playerMovementData.jumpPower += data.Velue;
+                    break;
+                case BuffTupe.DashPowe:
+                    playerMovementData.dashPower += data.Velue;
+                    break;
+                default:
+                    Debug.Log("잘못된 버프임");
+                    break;
+            }
+        }
+        else
+        {
+            switch (data.type)
+            {
+                case BuffTupe.Speed:
+                    StartCoroutine(MovementBuffDate.addWalkSpeed(data));
+                    break;
+                case BuffTupe.JumpPower:
+                    StartCoroutine(MovementBuffDate.addJumpPower(data));
+                    break;
+                case BuffTupe.DashPowe:
+                    StartCoroutine(MovementBuffDate.addDashPower(data));
+                    break;
+                default:
+                    Debug.Log("잘못된 버프임");
+                    break;
+            }
+        }
 
     }
-
-
     public void SetMouseDelta(Vector2 mouseDelta)
     {
         this.mouseDelta = mouseDelta;
@@ -86,7 +122,7 @@ public class PlayerController : MonoBehaviour
     void HandleMove()
     {
         Vector3 dir = transform.forward * moveInput.y + transform.right * moveInput.x;
-        dir *= walkSpeed;
+        dir *= playerMovementData.walkSpeed + MovementBuffDate.walkSpeed;
         dir.y = _rigidbody.velocity.y;
 
         _rigidbody.velocity = dir;

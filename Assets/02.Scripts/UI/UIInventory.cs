@@ -189,6 +189,7 @@ public class UIInventory : MonoBehaviour
                     case ConsumableType.Health:
                         condition.Heal(selectedItem.item.consumables[i].value); break;
                     case ConsumableType.Buff:
+                        controller.UseBuff(selectedItem.item.buffData); break;
                         //버프 적용
                         break;
                     default:

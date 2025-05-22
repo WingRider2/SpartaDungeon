@@ -2575,13 +2575,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 164386b38cdda484999a4950006d4bf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  jumpPower: 3
+  playerMovementData:
+    walkSpeed: 4
+    jumpPower: 3
+    dashPower: 100
+  MovementBuffDate:
+    walkSpeed: 0
+    jumpPower: 0
+    dashPower: 0
   groundLayerMask:
     serializedVersion: 2
     m_Bits: 439
   gravityScale: 3
-  DashPower: 100
   cameraContainer: {fileID: 1299069092}
   minXLook: -80
   maxXLook: 80

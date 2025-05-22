@@ -10,6 +10,7 @@ public enum BuffTupe
     None,
     Speed,
     JumpPower,
+    DashPowe,
 }
 public enum ConsumableType
 {
