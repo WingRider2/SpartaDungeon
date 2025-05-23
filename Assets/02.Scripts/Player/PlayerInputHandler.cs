@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using static UnityEngine.InputSystem.InputAction;
 
 public class PlayerInputHandler : MonoBehaviour
@@ -74,9 +75,9 @@ public class PlayerInputHandler : MonoBehaviour
 
         }
     }
-    public void OnSwitchViewMode(InputAction.CallbackContext context)
+
+    public void OnReStart(InputAction.CallbackContext context)
     {
-
+        transform.position = new Vector3(0, 0, 0);
     }
-
 }

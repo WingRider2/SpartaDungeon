@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody _rigidbody;
     private PlayerCondition _condition;
 
+    public Transform handHoldPoint;
     [Header("Movement")]
     Vector2 moveInput; // 이동입력
     public PlayerMovementData playerMovementData;
@@ -35,12 +36,18 @@ public class PlayerController : MonoBehaviour
     public bool canLook = true;
     public Action inventory;
 
+    public Transform reSponPos;
     private void Awake()
     {
 
         _playerInputHandler = GetComponent<PlayerInputHandler>();
         _rigidbody = GetComponent<Rigidbody>();
         _condition = GetComponent<PlayerCondition>();
+
+    }
+    private void Start()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
     }
     // Update is called once per frame
     void Update()
@@ -50,6 +57,10 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         HandleMove();
+        if(this.transform.position.y < -10.0f)
+        {
+            this.transform.position = reSponPos.position;
+        }
     }
     public void SetMoveInput(Vector2 input)
     {
@@ -121,23 +132,24 @@ public class PlayerController : MonoBehaviour
     public void OpenInventory()
     {
         inventory?.Invoke();
+        ToggleCursor();
     }
     void HandleMove()
-    {
-        Vector3 dir = Vector3.forward;
+    {        
+        Vector3 dir = (transform.forward * moveInput.y + transform.right * moveInput.x)
+                             * (playerMovementData.walkSpeed + MovementBuffDate.walkSpeed);
+
+        float vertical;
         if (isGripWall)
         {
-            dir = new Vector3((transform.right * moveInput.x).x, (transform.forward * moveInput.y).y, 0);
+            vertical = moveInput.y * playerMovementData.walkSpeed;
         }
         else
         {
-            dir = transform.forward * moveInput.y + transform.right * moveInput.x;
+            vertical = _rigidbody.velocity.y;
         }
-            
-        dir *= playerMovementData.walkSpeed + MovementBuffDate.walkSpeed;
-        dir.y = _rigidbody.velocity.y;
-
-        _rigidbody.velocity = dir;
+        _rigidbody.velocity = new Vector3(dir.x, vertical, dir.z);
+        _rigidbody.useGravity = !isGripWall;
     }
     bool IsGrounded()
     {

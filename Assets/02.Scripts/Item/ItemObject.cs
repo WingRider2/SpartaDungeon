@@ -9,6 +9,10 @@ public class ItemObject : MonoBehaviour , IInteractable
     public Transform handHoldPoint;
     bool isGrabbed = false;
 
+    private void Start()
+    {
+        handHoldPoint = PlayerManager.Instance.Player.controller.handHoldPoint;
+    }
     public string GetInteractPrompt()
     {
         string str = $"{itemData.displayName}\n{itemData.description}";

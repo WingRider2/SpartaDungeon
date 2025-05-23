@@ -60,18 +60,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwitchViewMode",
+                    "name": "PickUp",
                     "type": "Button",
-                    "id": "5269813f-26de-4d7b-8d27-d6d2cae1404f",
+                    "id": "b5508ad2-25a8-4176-8e72-701f2e2023a2",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "PickUp",
+                    "name": "ReStart",
                     "type": "Button",
-                    "id": "b5508ad2-25a8-4176-8e72-701f2e2023a2",
+                    "id": "5843995c-3a10-4e9a-88a5-854802795d7b",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -191,23 +191,23 @@
                 },
                 {
                     "name": "",
-                    "id": "8bffeacd-5dea-4df8-b0dd-7ce24fa83999",
-                    "path": "<Keyboard>/t",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "SwitchViewMode",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "3a5da35f-a6be-4753-9edc-61da9407a9ba",
                     "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "PickUp",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a27c0a36-ffaa-4fa9-b694-64da8cad45fc",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ReStart",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

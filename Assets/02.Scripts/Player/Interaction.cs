@@ -104,11 +104,25 @@ public class Interaction : MonoBehaviour
         }
     }
 
+    void DrawDebugSphere(Vector3 center, float r, Color col, float duration)
+    {
+        const int segments = 12;
+        float deltaTheta = 360f / segments;
+        Vector3 prevPoint = center + (Vector3.up * r);
+        for (int i = 1; i <= segments; i++)
+        {
+            float theta = deltaTheta * i * Mathf.Deg2Rad;
+            Vector3 nextPoint = center + new Vector3(Mathf.Sin(theta) * r, Mathf.Cos(theta) * r, 0);
+            Debug.DrawLine(prevPoint, nextPoint, col, duration);
+            prevPoint = nextPoint;
+        }
+        // XZ 평면에도 하나 더 그리려면 반복문 복사 후 Y↔Z 교체
+    }
     public void ObjSize()
     {
 
         Ray ray = camera.ScreenPointToRay(
-            new Vector3(Screen.width / 2, Screen.height / 2)
+            (grabObject.transform.position - this.transform.position).normalized
         );
         RaycastHit hit;
 
@@ -123,6 +137,13 @@ public class Interaction : MonoBehaviour
         float backgroundDistance;
         if (Physics.SphereCast(ray, radius, out hit, maxCheckDistance, mask))
         {
+            // 충돌 발생 시: origin→충돌지점 라인 빨강
+            Debug.DrawLine(ray.origin, hit.point, Color.red, 0.1f);
+            // 충돌 지점에 녹색 구 그리기
+            DrawDebugSphere(hit.point, radius, Color.green, 0.1f);
+
+            // hit.distance 는 “ray 시작점에서
+            // sphere가 닿기까지” 거리
             backgroundDistance = hit.distance;
         }
         else backgroundDistance = maxCheckDistance;
@@ -130,13 +151,13 @@ public class Interaction : MonoBehaviour
         //initialDistance = Mathf.Min(initialDistance , backgroundDistance);
 
         float scaleFactor = backgroundDistance / initialDistance;
-
-
         grabObject.transform.localScale = Vector3.one * (initialScale * scaleFactor);
 
 
         Vector3 dir = (grabObject.transform.position - camera.transform.position).normalized;
-        grabObject.transform.position = camera.transform.position + dir * initialDistance;
+        grabObject.transform.position
+            = camera.transform.position
+            + dir * backgroundDistance;
     }
 
 }

@@ -10,7 +10,7 @@ public class MovingPlatform : MonoBehaviour
 
     Vector3 startPos;
 
-
+    public bool isX;
     void Start()
     {
         startPos = transform.position;
@@ -20,7 +20,7 @@ public class MovingPlatform : MonoBehaviour
     {
         float x = Mathf.PingPong(Time.time * speed, moveRange)- moveRange/2;
 
-        transform.position = startPos + Vector3.right * x;
+        transform.position = startPos + (isX? Vector3.forward : Vector3.right) * x;
     }
     private void OnCollisionEnter(Collision collision)
     {
