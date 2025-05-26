@@ -121,9 +121,8 @@ public class Interaction : MonoBehaviour
     public void ObjSize()
     {
 
-        Ray ray = camera.ScreenPointToRay(
-            (grabObject.transform.position - this.transform.position).normalized
-        );
+        Vector3 dirs = (grabObject.transform.position - camera.transform.position).normalized;
+        Ray ray = new Ray(camera.transform.position, dirs);
         RaycastHit hit;
 
         int interactableLayer = LayerMask.NameToLayer("Interactable");
