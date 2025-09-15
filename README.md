@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <title>프로젝트 개요</title>
-</head>
 <body>
     <h1>프로젝트 개요</h1>
-    <p>간단한 액션 플랫폼 게임 프로토타입으로, 다양한 상호작용 오브젝트, 적 AI, 아이템 시스템 등을 구현합니다.</p>
+    <p>개인프로젝트로 진행한 Superliminal 1스테이지를 클론 프로젝트입니다. 오브젝트를 집어 원근감을 통해 크기를 조절하는 기능을 구현하여 스테이지를 클리어하는 게임입니다.</p>
     <h2>🎮 주요 기능</h2>
     <ul>
         <li><strong>사용자 인터페이스 (UI)</strong>
